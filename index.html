@@ -58,6 +58,14 @@
   .selo.espera{background:var(--esperabg);color:var(--espera)}
   .selo.falta{background:var(--faltabg);color:var(--falta)}
   .rotulo{font-size:12px;color:var(--suave)}
+  /* Mensagem com arte: imagem em cima, texto como legenda, igual o WhatsApp monta. */
+  .arte{background:var(--bolha);border:1px solid var(--bolhab);border-bottom:0;
+    border-radius:4px 14px 0 0;padding:6px 6px 0;margin:0}
+  .arte img{display:block;width:100%;height:auto;border-radius:3px 11px 0 0;
+    background:var(--linha);min-height:40px}
+  .arte figcaption{font-size:11px;color:var(--suave);padding:6px 8px 4px;
+    text-transform:uppercase;letter-spacing:.06em}
+  .arte + .bolha{border-radius:0 0 14px 14px;border-top:0}
   .bolha{background:var(--bolha);border:1px solid var(--bolhab);
     border-radius:4px 14px 14px 14px;padding:12px 14px;font-size:15px;
     word-break:break-word;overflow-wrap:anywhere}
@@ -120,13 +128,17 @@
   // `fila` só vem quando o texto do arquivo diverge do que está agendado: alguém editou a
   // mensagem e não recriou a ação. Sem esse aviso a página mostraria o texto novo com selo
   // "falta ir", prometendo um envio que não vai acontecer.
-  function cartao(hora, situacao, rotulo, texto, id, fila) {
+  function cartao(hora, situacao, rotulo, texto, id, fila, img, imgAlt) {
     var s = SIT[situacao] || { rotulo: situacao, cor: 'espera' }
     return '<article class="msg ' + (fila ? 'falta' : s.cor) + '">' +
       '<header><span class="hora">' + esc(hora) + '</span>' +
       '<span class="selo ' + s.cor + '">' + esc(s.rotulo) + '</span>' +
       (rotulo ? '<span class="rotulo">' + esc(rotulo) + '</span>' : '') +
-      '</header><div class="bolha">' + bolha(texto) + '</div>' +
+      '</header>' +
+      (img ? '<figure class="arte"><img src="' + esc(img) + '" alt="' + esc(imgAlt || '') +
+        '" loading="lazy"><figcaption>vai com esta imagem' +
+        (imgAlt ? ': ' + esc(imgAlt) : '') + '</figcaption></figure>' : '') +
+      '<div class="bolha">' + bolha(texto) + '</div>' +
       (fila ? '<div class="divergiu"><b>Atenção: não é este texto que vai sair.</b>' +
         'O texto acima é o novo, mas a mensagem agendada ainda é a antiga. ' +
         'Precisa pedir no painel pra cancelar e reprogramar.' +
@@ -166,7 +178,7 @@
     itens.forEach(function (i) {
       if (i.dia !== dia) { dia = i.dia; h += '<div class="dia"><span>' + esc(i.dia) + '</span></div>' }
       h += cartao(i.hora, i.situacao, i.rotulo, i.texto || '(sem texto no roteiro)',
-        i.actionId, i.divergente ? i.textoNaFila : null)
+        i.actionId, i.divergente ? i.textoNaFila : null, i.imagem, i.imagemAlt)
     })
 
     if (fora.length) {
