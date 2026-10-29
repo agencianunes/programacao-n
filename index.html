@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Programação de Mensagens</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%F0%9F%93%85%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f2ee; --papel:#fffdf9; --tinta:#17150f; --suave:#6a6558; --linha:#e2ddd2;
+    --ok:#1d7a4f; --okbg:#e6f3ea; --espera:#9a6212; --esperabg:#fbf0dc;
+    --falta:#a8321f; --faltabg:#fbe7e2; --bolha:#f0f7ec; --bolhab:#dbe9d4; --link:#0a6b57;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14130f; --papel:#1c1b16; --tinta:#f0ece2; --suave:#9d978a; --linha:#2e2c25;
+      --ok:#5fc78e; --okbg:#1b2d22; --espera:#dba84a; --esperabg:#2e2616;
+      --falta:#f08a74; --faltabg:#32201c; --bolha:#1f2a20; --bolhab:#2c3a2c; --link:#5fd3b4;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#14130f; --papel:#1c1b16; --tinta:#f0ece2; --suave:#9d978a; --linha:#2e2c25;
+    --ok:#5fc78e; --okbg:#1b2d22; --espera:#dba84a; --esperabg:#2e2616;
+    --falta:#f08a74; --faltabg:#32201c; --bolha:#1f2a20; --bolhab:#2c3a2c; --link:#5fd3b4;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--tinta);
+    font-family:"Bricolage Grotesque",system-ui,-apple-system,sans-serif;
+    font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .pag{max-width:640px;margin:0 auto;padding:28px 16px 64px}
+  header.topo{border-bottom:2px solid var(--tinta);padding-bottom:18px;margin-bottom:24px}
+  h1{font-size:clamp(25px,6vw,34px);line-height:1.1;margin:0 0 6px;font-weight:700;letter-spacing:-.02em}
+  .sub{color:var(--suave);font-size:14px;margin:0}
+  .placar{display:flex;gap:8px;margin:18px 0 0}
+  .pedaco{flex:1;background:var(--papel);border:1px solid var(--linha);border-radius:10px;padding:10px 12px}
+  .pedaco b{display:block;font-size:22px;line-height:1.1}
+  .pedaco span{font-size:11px;color:var(--suave);text-transform:uppercase;letter-spacing:.06em}
+  .pedaco.ok b{color:var(--ok)}.pedaco.espera b{color:var(--espera)}.pedaco.falta b{color:var(--falta)}
+  .aviso{background:var(--faltabg);border:1px solid var(--falta);color:var(--falta);
+    border-radius:10px;padding:12px 14px;margin:16px 0 0;font-size:14px}
+  .dia{display:flex;align-items:center;gap:12px;margin:32px 0 14px}
+  .dia::before,.dia::after{content:"";flex:1;height:1px;background:var(--linha)}
+  .dia span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--suave);white-space:nowrap}
+  .msg{background:var(--papel);border:1px solid var(--linha);border-radius:14px;
+    padding:14px;margin:0 0 14px;border-left:4px solid var(--linha)}
+  .msg.ok{border-left-color:var(--ok)}
+  .msg.espera{border-left-color:var(--espera)}
+  .msg.falta{border-left-color:var(--falta)}
+  .msg header{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .hora{font-weight:700;font-size:17px}
+  .selo{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;
+    padding:3px 8px;border-radius:999px;white-space:nowrap}
+  .selo.ok{background:var(--okbg);color:var(--ok)}
+  .selo.espera{background:var(--esperabg);color:var(--espera)}
+  .selo.falta{background:var(--faltabg);color:var(--falta)}
+  .rotulo{font-size:12px;color:var(--suave)}
+  .bolha{background:var(--bolha);border:1px solid var(--bolhab);
+    border-radius:4px 14px 14px 14px;padding:12px 14px;font-size:15px;
+    word-break:break-word;overflow-wrap:anywhere}
+  .bolha a{color:var(--link);text-decoration:underline;text-underline-offset:2px}
+  .id{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--suave);margin:8px 0 0}
+  .fora{margin-top:40px;padding-top:22px;border-top:1px dashed var(--linha)}
+  .fora h2{font-size:18px;margin:0 0 4px}
+  .nota{color:var(--suave);font-size:13px;margin:0 0 16px}
+  footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--linha);color:var(--suave);font-size:13px}
+  footer code{font-family:"IBM Plex Mono",monospace;font-size:12px}
+  .estado{padding:40px 0;color:var(--suave)}
+  .estado.erro{color:var(--falta)}
+</style>
+</head>
+<body>
+<div class="pag">
+  <div id="alvo"><p class="estado">Carregando a programação…</p></div>
+</div>
+
+<script>
+// A página é só a casca. O dado vem da Edge Function do Supabase, que lê a tabela que o
+// cron atualiza a cada 15 min. O token de acesso viaja na URL desta página (?k=) e é
+// repassado na chamada: assim o repositório não guarda credencial nenhuma.
+(function () {
+  var API = 'https://mswojazoztzrmmuexwfw.supabase.co/functions/v1/programacao-json'
+  var q = new URLSearchParams(location.search)
+  var k = q.get('k') || ''
+  var c = q.get('c') || 'arthur'
+  var alvo = document.getElementById('alvo')
+
+  var SIT = {
+    enviada:          { rotulo: 'já foi',          cor: 'ok' },
+    processada:       { rotulo: 'processada',      cor: 'ok' },
+    'na fila':        { rotulo: 'falta ir',        cor: 'espera' },
+    enviando:         { rotulo: 'enviando agora',  cor: 'espera' },
+    'nao programada': { rotulo: 'não programada',  cor: 'falta' }
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function (ch) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]
+    })
+  }
+
+  // Formatação do WhatsApp: *negrito*, ~riscado~, _itálico_, link clicável.
+  function bolha(t) {
+    var h = esc(t)
+    h = h.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>')
+    h = h.replace(/\*([^*\n]+)\*/g, '<strong>$1</strong>')
+    h = h.replace(/~([^~\n]+)~/g, '<s>$1</s>')
+    h = h.replace(/_([^_\n]+)_/g, '<em>$1</em>')
+    return h.replace(/\n/g, '<br>')
+  }
+
+  function cartao(hora, situacao, rotulo, texto, id) {
+    var s = SIT[situacao] || { rotulo: situacao, cor: 'espera' }
+    return '<article class="msg ' + s.cor + '">' +
+      '<header><span class="hora">' + esc(hora) + '</span>' +
+      '<span class="selo ' + s.cor + '">' + esc(s.rotulo) + '</span>' +
+      (rotulo ? '<span class="rotulo">' + esc(rotulo) + '</span>' : '') +
+      '</header><div class="bolha">' + bolha(texto) + '</div>' +
+      (id ? '<p class="id">' + esc(id) + '</p>' : '') + '</article>'
+  }
+
+  function desenhar(d) {
+    var itens = d.itens || [], fora = d.foraDoRoteiro || []
+    var conta = function (s) { return itens.filter(function (i) { return i.situacao === s }).length }
+    var jaFoi = conta('enviada') + conta('processada')
+    var naFila = conta('na fila')
+    var falta = conta('nao programada')
+
+    var quando = ''
+    try {
+      quando = new Date(d.geradoEm).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo',
+        day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })
+    } catch (e) { quando = String(d.geradoEm || '') }
+
+    var h = '<header class="topo"><h1>Programação de mensagens</h1>' +
+      '<p class="sub">' + esc(d.cliente || d.nome || '') + '</p>' +
+      '<div class="placar">' +
+      '<div class="pedaco ok"><b>' + jaFoi + '</b><span>já foram</span></div>' +
+      '<div class="pedaco espera"><b>' + naFila + '</b><span>na fila</span></div>' +
+      '<div class="pedaco falta"><b>' + falta + '</b><span>sem programar</span></div></div>' +
+      (falta ? '<p class="aviso">As <strong>' + falta + '</strong> sem programar não vão sair ' +
+        'sozinhas. Precisa pedir no painel.</p>' : '') +
+      '</header>'
+
+    var dia = ''
+    itens.forEach(function (i) {
+      if (i.dia !== dia) { dia = i.dia; h += '<div class="dia"><span>' + esc(i.dia) + '</span></div>' }
+      h += cartao(i.hora, i.situacao, i.rotulo, i.texto || '(sem texto no roteiro)', i.actionId)
+    })
+
+    if (fora.length) {
+      h += '<section class="fora"><h2>Mandadas à mão, fora do roteiro</h2>' +
+        '<p class="nota">Alguém enviou direto pelo painel do SendFlow. Não estão no arquivo ' +
+        'de mensagens.</p>'
+      fora.forEach(function (a) {
+        h += cartao(a.dia + ' ' + a.hora, a.estado, '',
+          a.texto || '(o SendFlow não devolve o texto de disparo antigo)', a.id)
+      })
+      h += '</section>'
+    }
+
+    h += '<footer><p>Atualiza a cada 15 minutos. Esta leitura é de <strong>' + esc(quando) +
+      '</strong>. Recarregue a página para ver o estado novo.</p>' +
+      '<p>Para mudar ou programar uma mensagem, peça no chat do painel, tipo SendFlow. ' +
+      'O texto que vale é o do arquivo <code>' +
+      esc(String(d.arquivoRoteiro || '').split('/').pop() || '') + '</code>.</p></footer>'
+
+    alvo.innerHTML = h
+  }
+
+  if (!k) {
+    alvo.innerHTML = '<p class="estado erro">Falta a chave de acesso no endereço. ' +
+      'Use o link completo que a Nathália enviou.</p>'
+    return
+  }
+
+  fetch(API + '?c=' + encodeURIComponent(c) + '&k=' + encodeURIComponent(k))
+    .then(function (r) {
+      if (r.status === 404) throw new Error('Link inválido ou cliente sem quadro ainda.')
+      if (!r.ok) throw new Error('O servidor respondeu ' + r.status + '.')
+      return r.json()
+    })
+    .then(desenhar)
+    .catch(function (e) {
+      alvo.innerHTML = '<p class="estado erro">Não consegui carregar: ' + esc(e.message) + '</p>'
+    })
+})()
+</script>
+</body>
+</html>
