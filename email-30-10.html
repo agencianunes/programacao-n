@@ -38,17 +38,6 @@
   h2{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--suave);
     margin:34px 0 10px;font-weight:600}
   .caixa{background:var(--papel);border:1px solid var(--linha);border-radius:12px;padding:16px}
-  .assunto{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;
-    border-bottom:1px solid var(--linha)}
-  .assunto:last-child{border-bottom:0}
-  .assunto .num{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--suave);
-    padding-top:3px;flex:0 0 auto}
-  .assunto .txt{flex:1;font-size:16px}
-  .assunto .medida{display:block;font-family:"IBM Plex Mono",monospace;font-size:11.5px;
-    color:var(--suave);margin-top:4px}
-  .assunto .medida.corte{color:var(--alerta)}
-  .assunto .marca{font-size:11px;color:var(--acento);background:var(--acentobg);
-    border-radius:999px;padding:2px 8px;white-space:nowrap;align-self:center}
   .corpo{background:var(--papel);border:1px solid var(--linha);border-radius:12px;
     padding:28px 26px;font-family:Newsreader,Georgia,serif;font-size:17.5px;line-height:1.62}
   .corpo p{margin:0 0 16px}
@@ -92,33 +81,7 @@
 </header>
 
 <h2>Assunto</h2>
-<div class="caixa" style="padding:0">
-  <div class="assunto"><span class="num">01</span>
-    <span class="txt">Você perdeu uma chance, mas a nova encerra hoje à meia-noite
-      <span class="medida">60 caracteres · inteiro no computador; no celular para em "mas a nova encerra"</span></span>
-    <span class="marca">escolhido</span></div>
-  <div class="assunto"><span class="num">02</span>
-    <span class="txt">A Reforma está batendo na porta. O desconto encerra hoje.
-      <span class="medida">57 caracteres · corta depois do ponto, a primeira frase fecha</span></span></div>
-  <div class="assunto"><span class="num">03</span>
-    <span class="txt">2027 bate na porta hoje à meia-noite
-      <span class="medida">36 caracteres · o único que aparece inteiro no celular</span></span></div>
-  <div class="assunto"><span class="num">04</span>
-    <span class="txt">O proprietário vai perguntar. Você tem até hoje.
-      <span class="medida">48 caracteres · corta em "Você tem até…", que ainda entrega a pressa</span></span></div>
-</div>
-
-<div class="obs" style="background:var(--acentobg);border-color:var(--acento);color:var(--acento)">
-  <strong>O corpo foi reescrito pra sustentar o assunto 01.</strong> Ele abre uma dívida
-  ("você perdeu uma chance") e quem abre o e-mail quer saber qual foi. As três primeiras linhas
-  respondem: quarta acabou o desconto de R$ 1.000, quinta o carrinho ia fechar e foi prorrogado,
-  e a prorrogação é hoje. Se trocar pelo 02, 03 ou 04, me peça pra realinhar a abertura: assunto
-  que promete uma coisa e corpo que entrega outra queima a lista.
-
-  <br><br>Como o RD não tem pré-cabeçalho, o assunto carrega curiosidade e prazo juntos. Celular
-  mostra de 35 a 45 caracteres, computador cerca de 60. O 01 cabe inteiro no computador e, no
-  celular, para em "mas a nova encerra", que já diz que existe prazo.
-</div>
+<div class="caixa">Você perdeu uma chance, mas a nova encerra hoje à meia-noite</div>
 
 <h2>Corpo do e-mail</h2>
 <div class="corpo" id="corpo">
