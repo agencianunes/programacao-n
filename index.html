@@ -70,6 +70,11 @@
   footer code{font-family:"IBM Plex Mono",monospace;font-size:12px}
   .estado{padding:40px 0;color:var(--suave)}
   .estado.erro{color:var(--falta)}
+  .divergiu{background:var(--faltabg);border:1px solid var(--falta);color:var(--falta);
+    border-radius:8px;padding:10px 12px;margin:10px 0 0;font-size:13px}
+  .divergiu b{display:block;margin-bottom:4px}
+  .divergiu .antigo{display:block;margin-top:8px;padding-top:8px;
+    border-top:1px solid var(--falta);opacity:.85;font-size:13px}
 </style>
 </head>
 <body>
@@ -112,13 +117,20 @@
     return h.replace(/\n/g, '<br>')
   }
 
-  function cartao(hora, situacao, rotulo, texto, id) {
+  // `fila` só vem quando o texto do arquivo diverge do que está agendado: alguém editou a
+  // mensagem e não recriou a ação. Sem esse aviso a página mostraria o texto novo com selo
+  // "falta ir", prometendo um envio que não vai acontecer.
+  function cartao(hora, situacao, rotulo, texto, id, fila) {
     var s = SIT[situacao] || { rotulo: situacao, cor: 'espera' }
-    return '<article class="msg ' + s.cor + '">' +
+    return '<article class="msg ' + (fila ? 'falta' : s.cor) + '">' +
       '<header><span class="hora">' + esc(hora) + '</span>' +
       '<span class="selo ' + s.cor + '">' + esc(s.rotulo) + '</span>' +
       (rotulo ? '<span class="rotulo">' + esc(rotulo) + '</span>' : '') +
       '</header><div class="bolha">' + bolha(texto) + '</div>' +
+      (fila ? '<div class="divergiu"><b>Atenção: não é este texto que vai sair.</b>' +
+        'O texto acima é o novo, mas a mensagem agendada ainda é a antiga. ' +
+        'Precisa pedir no painel pra cancelar e reprogramar.' +
+        '<span class="antigo"><b>O que está agendado hoje:</b>' + bolha(fila) + '</span></div>' : '') +
       (id ? '<p class="id">' + esc(id) + '</p>' : '') + '</article>'
   }
 
@@ -128,6 +140,7 @@
     var jaFoi = conta('enviada') + conta('processada')
     var naFila = conta('na fila')
     var falta = conta('nao programada')
+    var divergem = itens.filter(function (i) { return i.divergente }).length
 
     var quando = ''
     try {
@@ -143,12 +156,17 @@
       '<div class="pedaco falta"><b>' + falta + '</b><span>sem programar</span></div></div>' +
       (falta ? '<p class="aviso">As <strong>' + falta + '</strong> sem programar não vão sair ' +
         'sozinhas. Precisa pedir no painel.</p>' : '') +
+      (divergem ? '<p class="aviso"><strong>' + divergem + '</strong> mensagem' +
+        (divergem > 1 ? 's foram editadas' : ' foi editada') + ' mas não reprogramada' +
+        (divergem > 1 ? 's' : '') + ': o texto que vai sair é o antigo. ' +
+        'Está marcado em vermelho mais abaixo.</p>' : '') +
       '</header>'
 
     var dia = ''
     itens.forEach(function (i) {
       if (i.dia !== dia) { dia = i.dia; h += '<div class="dia"><span>' + esc(i.dia) + '</span></div>' }
-      h += cartao(i.hora, i.situacao, i.rotulo, i.texto || '(sem texto no roteiro)', i.actionId)
+      h += cartao(i.hora, i.situacao, i.rotulo, i.texto || '(sem texto no roteiro)',
+        i.actionId, i.divergente ? i.textoNaFila : null)
     })
 
     if (fora.length) {
