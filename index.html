@@ -42,6 +42,19 @@
   .pedaco.ok b{color:var(--ok)}.pedaco.espera b{color:var(--espera)}.pedaco.falta b{color:var(--falta)}
   .aviso{background:var(--faltabg);border:1px solid var(--falta);color:var(--falta);
     border-radius:10px;padding:12px 14px;margin:16px 0 0;font-size:14px}
+  /* Abas por dia: a sequência inteira passa de 20 mensagens e rolar tudo pra achar
+     o dia de hoje é o que mais incomoda no celular. */
+  .abas{position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;
+    background:var(--bg);padding:10px 0;margin:0 0 18px;
+    border-bottom:1px solid var(--linha);scrollbar-width:none}
+  .abas::-webkit-scrollbar{display:none}
+  .aba{flex:0 0 auto;background:var(--papel);border:1px solid var(--linha);color:var(--tinta);
+    font:inherit;font-size:14px;padding:8px 14px;border-radius:999px;cursor:pointer;
+    display:flex;align-items:center;gap:7px;white-space:nowrap}
+  .aba[aria-selected="true"]{background:var(--tinta);color:var(--bg);border-color:var(--tinta)}
+  .aba .bolinha{width:7px;height:7px;border-radius:50%;background:var(--ok);flex:0 0 auto}
+  .aba .bolinha.falta{background:var(--falta)}
+  .aba .bolinha.espera{background:var(--espera)}
   .dia{display:flex;align-items:center;gap:12px;margin:32px 0 14px}
   .dia::before,.dia::after{content:"";flex:1;height:1px;background:var(--linha)}
   .dia span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--suave);white-space:nowrap}
@@ -174,23 +187,44 @@
         'Está marcado em vermelho mais abaixo.</p>' : '') +
       '</header>'
 
-    var dia = ''
-    itens.forEach(function (i) {
-      if (i.dia !== dia) { dia = i.dia; h += '<div class="dia"><span>' + esc(i.dia) + '</span></div>' }
-      h += cartao(i.hora, i.situacao, i.rotulo, i.texto || '(sem texto no roteiro)',
-        i.actionId, i.divergente ? i.textoNaFila : null, i.imagem, i.imagemAlt)
+    // Dias na ordem em que aparecem, com os disparos à mão caindo no dia a que pertencem.
+    var dias = []
+    itens.concat(fora).forEach(function (x) {
+      if (dias.indexOf(x.dia) === -1) dias.push(x.dia)
+    })
+    dias.sort(function (a, b) {
+      var pa = a.split('/'), pb = b.split('/')
+      return (pa[1] + pa[0]).localeCompare(pb[1] + pb[0])
     })
 
-    if (fora.length) {
-      h += '<section class="fora"><h2>Mandadas à mão, fora do roteiro</h2>' +
-        '<p class="nota">Alguém enviou direto pelo painel do SendFlow. Não estão no arquivo ' +
-        'de mensagens.</p>'
-      fora.forEach(function (a) {
-        h += cartao(a.dia + ' ' + a.hora, a.estado, '',
-          a.texto || '(o SendFlow não devolve o texto de disparo antigo)', a.id)
+    h += '<div class="abas" role="tablist">' + dias.map(function (dd) {
+      var doDia = itens.filter(function (i) { return i.dia === dd })
+      var cor = doDia.some(function (i) { return i.situacao === 'nao programada' }) ? 'falta'
+        : doDia.some(function (i) { return i.situacao === 'na fila' }) ? 'espera' : ''
+      return '<button class="aba" role="tab" data-dia="' + esc(dd) + '">' +
+        '<span class="bolinha ' + cor + '"></span>' + esc(dd) + '</button>'
+    }).join('') + '</div>'
+
+    dias.forEach(function (dd) {
+      h += '<section class="paineldia" data-dia="' + esc(dd) + '" hidden>'
+      h += '<div class="dia"><span>' + esc(dd) + '</span></div>'
+      itens.filter(function (i) { return i.dia === dd }).forEach(function (i) {
+        h += cartao(i.hora, i.situacao, i.rotulo, i.texto || '(sem texto no roteiro)',
+          i.actionId, i.divergente ? i.textoNaFila : null, i.imagem, i.imagemAlt)
       })
+      var foraDoDia = fora.filter(function (a) { return a.dia === dd })
+      if (foraDoDia.length) {
+        h += '<section class="fora"><h2>Mandadas à mão, fora do roteiro</h2>' +
+          '<p class="nota">Alguém enviou direto pelo painel do SendFlow. Não estão no ' +
+          'arquivo de mensagens.</p>'
+        foraDoDia.forEach(function (a) {
+          h += cartao(a.hora, a.estado, '',
+            a.texto || '(o SendFlow não devolve o texto de disparo antigo)', a.id)
+        })
+        h += '</section>'
+      }
       h += '</section>'
-    }
+    })
 
     h += '<footer><p>Atualiza a cada 15 minutos. Esta leitura é de <strong>' + esc(quando) +
       '</strong>. Recarregue a página para ver o estado novo.</p>' +
@@ -199,6 +233,42 @@
       esc(String(d.arquivoRoteiro || '').split('/').pop() || '') + '</code>.</p></footer>'
 
     alvo.innerHTML = h
+    ligarAbas(dias)
+  }
+
+  function ligarAbas(dias) {
+    var botoes = [].slice.call(alvo.querySelectorAll('.aba'))
+    var paineis = [].slice.call(alvo.querySelectorAll('.paineldia'))
+
+    function mostrar(dd) {
+      botoes.forEach(function (b) { b.setAttribute('aria-selected', b.dataset.dia === dd) })
+      paineis.forEach(function (p) { p.hidden = p.dataset.dia !== dd })
+      try { localStorage.setItem('programacao-dia', dd) } catch (e) {}
+    }
+
+    botoes.forEach(function (b) {
+      b.addEventListener('click', function () { mostrar(b.dataset.dia) })
+    })
+
+    // Abre no dia de hoje. Se hoje não estiver na sequência, no último que ela tem, que é
+    // pra onde a atenção vai. A última aba aberta só vale se ainda existir no quadro.
+    var hoje = ''
+    try {
+      hoje = new Date().toLocaleDateString('pt-BR',
+        { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit' })
+    } catch (e) {}
+    var guardado = ''
+    try { guardado = localStorage.getItem('programacao-dia') || '' } catch (e) {}
+
+    var alvoDia = dias.indexOf(hoje) !== -1 ? hoje
+      : dias.indexOf(guardado) !== -1 ? guardado
+      : dias[dias.length - 1]
+    mostrar(alvoDia)
+
+    var ativo = alvo.querySelector('.aba[aria-selected="true"]')
+    if (ativo && ativo.scrollIntoView) {
+      ativo.scrollIntoView({ block: 'nearest', inline: 'center' })
+    }
   }
 
   if (!k) {
