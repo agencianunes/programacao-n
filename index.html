@@ -230,7 +230,9 @@
       '</strong>. Recarregue a página para ver o estado novo.</p>' +
       '<p>Para mudar ou programar uma mensagem, peça no chat do painel, tipo SendFlow. ' +
       'O texto que vale é o do arquivo <code>' +
-      esc(String(d.arquivoRoteiro || '').split('/').pop() || '') + '</code>.</p></footer>'
+      esc(String(d.arquivoRoteiro || '').split('/').pop() || '') + '</code>.</p>' +
+      '<p>O e-mail do último dia do desconto está em ' +
+      '<a href="./email-30-10.html">outra página</a>.</p></footer>'
 
     alvo.innerHTML = h
     ligarAbas(dias)
