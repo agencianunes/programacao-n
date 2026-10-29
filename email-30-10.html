@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>E-mail do Último Dia</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%E2%9C%89%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Newsreader:opsz,wght@6..72,400;6..72,600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f2ee; --papel:#fffdf9; --tinta:#17150f; --suave:#6a6558; --linha:#e2ddd2;
+    --acento:#1d7a4f; --acentobg:#e6f3ea; --alerta:#a8321f; --alertabg:#fbe7e2; --link:#0a6b57; --ctatexto:#fffdf9;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14130f; --papel:#1c1b16; --tinta:#f0ece2; --suave:#9d978a; --linha:#2e2c25;
+      --acento:#5fc78e; --acentobg:#1b2d22; --alerta:#f08a74; --alertabg:#32201c; --link:#5fd3b4; --ctatexto:#14130f;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#14130f; --papel:#1c1b16; --tinta:#f0ece2; --suave:#9d978a; --linha:#2e2c25;
+    --acento:#5fc78e; --acentobg:#1b2d22; --alerta:#f08a74; --alertabg:#32201c; --link:#5fd3b4; --ctatexto:#14130f;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--tinta);
+    font-family:"Bricolage Grotesque",system-ui,-apple-system,sans-serif;
+    font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .pag{max-width:680px;margin:0 auto;padding:30px 16px 72px}
+  header.topo{border-bottom:2px solid var(--tinta);padding-bottom:18px;margin-bottom:26px}
+  h1{font-size:clamp(26px,6vw,38px);line-height:1.08;margin:0 0 8px;font-weight:700;letter-spacing:-.02em}
+  .sub{color:var(--suave);font-size:14px;margin:0}
+  .quando{display:inline-block;background:var(--alertabg);color:var(--alerta);
+    border:1px solid var(--alerta);border-radius:999px;padding:4px 12px;
+    font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+  h2{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--suave);
+    margin:34px 0 10px;font-weight:600}
+  .caixa{background:var(--papel);border:1px solid var(--linha);border-radius:12px;padding:16px}
+  .assunto{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;
+    border-bottom:1px solid var(--linha)}
+  .assunto:last-child{border-bottom:0}
+  .assunto .num{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--suave);
+    padding-top:3px;flex:0 0 auto}
+  .assunto .txt{flex:1;font-size:16px}
+  .assunto .marca{font-size:11px;color:var(--acento);background:var(--acentobg);
+    border-radius:999px;padding:2px 8px;white-space:nowrap;align-self:center}
+  .corpo{background:var(--papel);border:1px solid var(--linha);border-radius:12px;
+    padding:28px 26px;font-family:Newsreader,Georgia,serif;font-size:17.5px;line-height:1.62}
+  .corpo p{margin:0 0 16px}
+  .corpo ul{margin:0 0 18px;padding-left:0;list-style:none}
+  .corpo li{margin:0 0 9px;padding-left:26px;position:relative}
+  .corpo li::before{content:"✓";position:absolute;left:0;color:var(--acento);font-weight:700}
+  .corpo strong{font-weight:600}
+  .corpo a{color:var(--link)}
+  .corpo .oferta{background:var(--acentobg);border:1px solid var(--acento);border-radius:10px;
+    padding:16px 18px;margin:0 0 18px}
+  .corpo .oferta p:last-child{margin:0}
+  .corpo .cta{text-align:center;margin:26px 0}
+  .corpo .cta a{display:inline-block;background:var(--acento);color:var(--ctatexto);
+    text-decoration:none;font-family:"Bricolage Grotesque",sans-serif;font-weight:600;
+    font-size:16px;padding:14px 28px;border-radius:8px}
+  .corpo .ps{font-size:16px;color:var(--suave);border-top:1px solid var(--linha);
+    padding-top:16px;margin-top:22px}
+  .copiar{background:var(--tinta);color:var(--bg);border:0;font:inherit;font-size:14px;
+    font-weight:600;padding:9px 16px;border-radius:8px;cursor:pointer;margin-top:12px}
+  .copiar[data-feito="1"]{background:var(--acento)}
+  .ficha{display:grid;gap:1px;background:var(--linha);border:1px solid var(--linha);
+    border-radius:12px;overflow:hidden}
+  .ficha div{background:var(--papel);padding:11px 14px;display:flex;gap:12px;font-size:14px}
+  .ficha dt{color:var(--suave);flex:0 0 120px;margin:0}
+  .ficha dd{margin:0;flex:1;word-break:break-word;overflow-wrap:anywhere}
+  .ficha code{font-family:"IBM Plex Mono",monospace;font-size:12.5px}
+  .obs{background:var(--alertabg);border:1px solid var(--alerta);color:var(--alerta);
+    border-radius:10px;padding:13px 15px;margin:14px 0 0;font-size:14px}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--linha);
+    color:var(--suave);font-size:13px}
+  footer a{color:var(--link)}
+</style>
+</head>
+<body>
+<div class="pag">
+
+<header class="topo">
+  <span class="quando">Para enviar sexta, 30/10, de manhã</span>
+  <h1>Último dia do desconto</h1>
+  <p class="sub">E-mail para a base da masterclass · A Nova Venda · Arthur Thomazi</p>
+</header>
+
+<h2>Assunto · escolher um</h2>
+<div class="caixa" style="padding:0">
+  <div class="assunto"><span class="num">01</span>
+    <span class="txt">Encerra hoje à meia-noite</span>
+    <span class="marca">recomendado</span></div>
+  <div class="assunto"><span class="num">02</span>
+    <span class="txt">Seus R$ 500 de desconto expiram hoje</span></div>
+  <div class="assunto"><span class="num">03</span>
+    <span class="txt">Prorrogamos um dia. Hoje é esse dia.</span></div>
+</div>
+
+<h2>Pré-cabeçalho</h2>
+<div class="caixa">Depois da meia-noite o valor volta para R$ 2.497.</div>
+
+<h2>Corpo do e-mail</h2>
+<div class="corpo" id="corpo">
+  <p>Ontem o carrinho ia fechar.</p>
+
+  <p>Chegou gente pedindo mais um dia, e o Arthur resolveu prorrogar. Mas prorrogar uma vez
+  é respeito com quem ficou em dúvida. Prorrogar duas vezes é desrespeito com quem decidiu
+  na hora certa. Então hoje encerra de verdade.</p>
+
+  <p>Até <strong>hoje, 23h59</strong>, você garante <strong>A Nova Venda</strong> com
+  R$ 500 de desconto.</p>
+
+  <div class="oferta">
+    <p><strong>R$ 1.997,00 à vista</strong>, ou 10x de R$ 199,70 sem juros.<br>
+    Depois da meia-noite, volta para R$ 2.497.</p>
+  </div>
+
+  <div class="cta"><a href="#" id="cta1">Garantir minha vaga com R$ 500 de desconto</a></div>
+
+  <p><strong>Por que agora, e não depois.</strong></p>
+
+  <p>A transição começa em 2027. Não é um prazo distante: é o ano que vem. E a conta muda
+  antes disso, na mesa de negociação, quando o proprietário perguntar quanto do preço dele
+  vira imposto e quem é que vai pagar essa diferença.</p>
+
+  <p>O TCU propôs a alíquota da CBS para 2027 em 11,3%. Num imóvel de R$ 3 milhões, IBS e
+  CBS podem representar R$ 100 mil de fato novo na mesa já no primeiro ano. Até 2033, essa
+  mesma conta chega perto de R$ 300 mil.</p>
+
+  <p>Daqui a um ano, metade do mercado vai estar explicando ao cliente por que a conta mudou.
+  A outra metade vai estar dando desconto na própria comissão para fechar negócio, porque não
+  soube explicar. A diferença entre as duas é repertório.</p>
+
+  <p><strong>O que você recebe ao entrar:</strong></p>
+
+  <ul>
+    <li><strong>12 aulas</strong>, de 1h a 1h30 cada, com o conteúdo completo liberado assim
+    que o pagamento é confirmado. Você não espera turma nova nem cronograma.</li>
+    <li><strong>3 encontros ao vivo com o Arthur</strong>: a aula inaugural de 10 de novembro,
+    um encontro de tira-dúvidas e o encontro final.</li>
+    <li><strong>Bloco de 4 aulas só sobre locação</strong>, do enquadramento do locador à
+    revisão dos contratos que já estão assinados.</li>
+    <li><strong>Documentos de venda e de locação já revisados</strong>, cada um com uma aula
+    comentando cláusula por cláusula. É modelo pronto para usar, não teoria.</li>
+    <li><strong>Calculadora de simulação</strong> de impacto tributário e de comissão, para
+    você fazer a conta na frente do cliente.</li>
+    <li><strong>Grupo da turma, grupo de notícias e plantão de dúvidas</strong>, porque a
+    regulamentação continua se mexendo e você vai querer perguntar.</li>
+    <li><strong>1 ano de acesso</strong>, com aulas de atualização conforme a lei avança.</li>
+    <li><strong>Garantia incondicional de 7 dias</strong>, com reembolso integral pela Hotmart.</li>
+  </ul>
+
+  <p><strong>E um bônus de quem entra até hoje:</strong> encontro ao vivo no dia 3 de novembro,
+  às 19h, com Rodrigo Werneck e Moira Toledo.</p>
+
+  <p>Sobre a garantia: você entra, assiste às aulas, abre os documentos, usa a calculadora. Se
+  em 7 dias concluir que não era o que esperava, pede o reembolso e recebe tudo de volta. O
+  risco de entrar é zero. O de ficar de fora é a conversa que você não vai saber conduzir no
+  ano que vem.</p>
+
+  <div class="cta"><a href="#" id="cta2">Quero entrar com R$ 500 de desconto</a></div>
+
+  <p>Se quiser ver o programa completo antes, aula por aula, está tudo aqui:
+  <a href="#" id="lp">página do curso</a>.</p>
+
+  <p>Até logo,<br>
+  Equipe Arthur Thomazi</p>
+
+  <p class="ps"><strong>P.S.</strong> O desconto cai à meia-noite de hoje e não volta. Se você
+  está lendo isso às 23h, ainda dá tempo, mas não dá para deixar para as 00h05.</p>
+</div>
+<button class="copiar" data-alvo="corpo">Copiar o corpo do e-mail</button>
+
+<h2>Links, já com rastreio</h2>
+<dl class="ficha">
+  <div><dt>Checkout</dt><dd><code id="f-checkout"></code></dd></div>
+  <div><dt>Página do curso</dt><dd><code id="f-lp"></code></dd></div>
+  <div><dt>Cupom</dt><dd><code>REFORMA500</code> · 20,024% · R$ 1.997,00 à vista</dd></div>
+  <div><dt>Prazo</dt><dd>sexta, 30/10, 23h59 (America/Sao_Paulo)</dd></div>
+</dl>
+
+<div class="obs">
+  <strong>Confira antes de disparar:</strong> o bônus do encontro de 03/11 está prometido a
+  quem entrar até hoje. Era de quem entrasse nos dias 28 e 29. Se ele não estica junto com o
+  desconto, peça para tirar essa linha.
+</div>
+
+<footer>
+  <p>Escrito para a base de e-mail da masterclass de 28/10. Para programar o envio ou alterar
+  qualquer trecho, peça no chat do painel.</p>
+  <p>A programação das mensagens de WhatsApp está em
+  <a href="./?c=arthur&k=e41c7a120194b44687a0b4ce">outra página</a>.</p>
+</footer>
+
+</div>
+
+<script>
+// Os links ficam fora do HTML e entram aqui pra haver um lugar só onde o rastreio é montado:
+// mudar a campanha é mudar uma linha, e o texto do e-mail nunca fica com UTM desencontrado.
+(function () {
+  var CAMPANHA = 'ultimo-dia-30-10'
+  var CHECKOUT = 'https://pay.hotmart.com/A106227313P?offDiscount=REFORMA500&sck=email-' + CAMPANHA
+  var LP = 'https://acessoreforma.arthurthomazi.com.br/?utm_source=rdstation&utm_medium=email' +
+    '&utm_campaign=' + CAMPANHA
+
+  document.getElementById('cta1').href = CHECKOUT
+  document.getElementById('cta2').href = CHECKOUT
+  document.getElementById('lp').href = LP
+  document.getElementById('f-checkout').textContent = CHECKOUT
+  document.getElementById('f-lp').textContent = LP
+
+  // Copia com os links já resolvidos, pra ninguém colar no RD com href vazio.
+  document.querySelectorAll('.copiar').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var no = document.getElementById(b.dataset.alvo).cloneNode(true)
+      no.querySelectorAll('a').forEach(function (a) {
+        var href = a.id === 'lp' ? LP : CHECKOUT
+        a.replaceWith(document.createTextNode(a.textContent + ': ' + href))
+      })
+      var txt = no.innerText.replace(/\n{3,}/g, '\n\n').trim()
+      function feito() {
+        b.textContent = 'Copiado'
+        b.dataset.feito = '1'
+        setTimeout(function () { b.textContent = 'Copiar o corpo do e-mail'; b.dataset.feito = '' }, 2000)
+      }
+      try {
+        navigator.clipboard.writeText(txt).then(feito, function () { selecionar(b) })
+      } catch (e) { selecionar(b) }
+    })
+  })
+
+  function selecionar(b) {
+    var r = document.createRange()
+    r.selectNodeContents(document.getElementById(b.dataset.alvo))
+    var s = window.getSelection()
+    s.removeAllRanges()
+    s.addRange(r)
+    b.textContent = 'Selecionado, use Ctrl+C'
+  }
+})()
+</script>
+</body>
+</html>
