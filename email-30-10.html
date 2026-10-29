@@ -44,6 +44,9 @@
   .assunto .num{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--suave);
     padding-top:3px;flex:0 0 auto}
   .assunto .txt{flex:1;font-size:16px}
+  .assunto .medida{display:block;font-family:"IBM Plex Mono",monospace;font-size:11.5px;
+    color:var(--suave);margin-top:4px}
+  .assunto .medida.corte{color:var(--alerta)}
   .assunto .marca{font-size:11px;color:var(--acento);background:var(--acentobg);
     border-radius:999px;padding:2px 8px;white-space:nowrap;align-self:center}
   .corpo{background:var(--papel);border:1px solid var(--linha);border-radius:12px;
@@ -91,25 +94,29 @@
 <h2>Assunto · escolher um</h2>
 <div class="caixa" style="padding:0">
   <div class="assunto"><span class="num">01</span>
-    <span class="txt">A pergunta que o proprietário vai te fazer</span>
+    <span class="txt">A Reforma está batendo na porta. O desconto encerra hoje.
+      <span class="medida">57 caracteres · no celular corta em "O descont…", mas a primeira frase fecha antes</span></span>
     <span class="marca">recomendado</span></div>
   <div class="assunto"><span class="num">02</span>
-    <span class="txt">11,3%</span></div>
+    <span class="txt">A Reforma Tributária está batendo na porta, e o desconto da Nova Venda
+      encerra hoje
+      <span class="medida corte">83 caracteres · no celular para em "…batendo na porta" e o prazo some</span></span></div>
   <div class="assunto"><span class="num">03</span>
-    <span class="txt">Metade do mercado não vai saber explicar isso</span></div>
+    <span class="txt">2027 bate na porta hoje à meia-noite
+      <span class="medida">36 caracteres · o único que aparece inteiro no celular</span></span></div>
   <div class="assunto"><span class="num">04</span>
-    <span class="txt">R$ 100 mil que ninguém avisou que existiam</span></div>
+    <span class="txt">O proprietário vai perguntar. Você tem até hoje.
+      <span class="medida">48 caracteres · corta em "Você tem até…", que ainda entrega a pressa</span></span></div>
 </div>
 
-<h2>Pré-cabeçalho</h2>
-<div class="caixa">Hoje é o último dia com R$ 500 de desconto. Depois da meia-noite volta para R$ 2.497.</div>
-
 <div class="obs" style="background:var(--acentobg);border-color:var(--acento);color:var(--acento)">
-  <strong>A curiosidade fica no assunto, o prazo no pré-cabeçalho.</strong> Na caixa de entrada os
-  dois aparecem lado a lado: o assunto abre a pergunta, o pré-cabeçalho avisa que encerra hoje.
-  Assim o e-mail dá vontade de abrir sem perder a urgência, e nenhum dos dois precisa gritar.
-  O <strong>02</strong> é o mais arriscado dos quatro: destaca na caixa por ser curto demais, mas
-  pode ser lido como erro de envio.
+  <strong>Sem pré-cabeçalho, o assunto carrega as duas coisas.</strong> Como o RD não tem esse
+  campo, curiosidade e prazo têm que caber na mesma linha. O celular mostra de 35 a 45 caracteres
+  e o computador cerca de 60, então o que importa vem primeiro.
+  A <strong>01</strong> é a sua frase encurtada: no celular ela corta, mas corta depois do ponto,
+  com "A Reforma está batendo na porta" já entregue.
+  A <strong>02</strong> é a sua frase inteira: lê bem no computador, e no celular para justamente
+  em "na porta", deixando o prazo de fora. É o risco dela.
 </div>
 
 <h2>Corpo do e-mail</h2>
